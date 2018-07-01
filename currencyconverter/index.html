@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Currency Converter</title>
+        <link rel="manifest" href="./manifest.json">
+        
+    </head>
+<body>
+    <div style ="background-color:blue; color : white; padding :20px;" >
+        <h1 align = "center"> CURRENCY CONVERTER</h1>
+        <p> <h3 align = "center">Convert any currency in the world without stress,works offline for your favorite conversion rate</h3> <p>
+    </div>
+    <div align = "center">
+            <form name="converter">
+                <h3> <strong> CONVERT</strong></h3>
+                <h4> <strong> FROM</strong></h4>
+ 
+                <select name="currencyF" id="currencyF" class="form-control op">
+                    <option value="" disabled selected>Select currency</option>
+                  </select>
+                <h4> <strong> TO</strong></h4>
+        
+                <select name="currencyT" id="currencyT" class="form-control op">
+                   <option value="" disabled selected>Select currency</option>
+                        </select>
+                
+                
+                <input type="text" class="form-control" placeholder="Enter Amount" id="userInput" aria-describedby="sizing-addon1" onkeyup="autoConvert()">
+                <h4 id="conv"> Display amount</h4>
+                </form>
+        
+   </div>
+    <script language = "javascript" type="text/javascript">
+        
+const input = document.querySelector('#userInput');
+const conversionResult = document.getElementById('conv');
+const fillin = document.getElementsByClassName('op');
+const autoConvert = () => {
+    const currencyF = document.querySelector('#currencyF').value;
+    const currencyT = document.querySelector('#currencyT').value;
+    let valueToBeConverted = input.value;
+    const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${currencyF}_${currencyT}&compact=y`;
+    fetch(url)
+        .then((res) => res.json())
+        .then((res) => {
+            const keys = Object.entries(res);
+            const xxx = Number(valueToBeConverted) * keys[0][1].val;
+            conversionResult.innerText = xxx.toLocaleString("us");
+        });
+}
+const url = "https://free.currencyconverterapi.com/api/v5/currencies";
+fetch(url)
+    .then((res) => res.json())
+    .then((res) => {
+        const currencies = res.results;
+        const currenciesArray = Object.entries(currencies);
+        currenciesArray.forEach(element => {
+            // let country = element[1].name;
+            let id = element[1].id;
+            let name = element[1].currencyName;
+            let symbolx = element[1].currencySymbol;
+            if (element[1].currencySymbol == undefined) {
+                symbolx = "";
+            }
+            fillin[0].innerHTML += `<option value="${id}">${name} - ${symbolx}</option>`;
+            fillin[1].innerHTML += `<option value="${id}">${name} - ${symbolx}</option>`;
+        });
+    });
+    </script>
+    <script>
+    if ('serviceWorkker in navigator'){
+        
+        navigator.serviceWorker.register('sw.js')
+                .then((reg)=>{
+                    console.log("service worker is now registered");
+        }).catch((err)=>{
+            console.log(`Service worker isn't registered here because: ${err}`);
+            
+        });
+    }  
+</script>
+    </body>
+</html>

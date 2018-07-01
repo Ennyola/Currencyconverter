@@ -1,0 +1,12 @@
+{
+    "name": "Currency Converter",
+    "icons ": [{
+        "src": "img/icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }],
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "background_color": "black",
+    "theme_color": "blue"
+}
